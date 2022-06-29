@@ -1,9 +1,16 @@
+interface ProductOptionProps {
+  name: string;
+  values: string[];
+  selectedOptions: any;
+  setOptions: (name: string, value: string) => void;
+}
+
 export default function ProductOption({
   name,
   values,
   selectedOptions,
   setOptions,
-}) {
+}: ProductOptionProps) {
   return (
     <fieldset className="mt-2">
       <legend className="text-lg font-semibold">{name}</legend>

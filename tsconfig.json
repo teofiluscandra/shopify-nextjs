@@ -14,6 +14,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
     "baseUrl": ".",
     "paths": {
       "@/components/*": [
@@ -27,7 +29,10 @@
       ],
       "@/styles/*": [
         "styles/*"
-      ]
+      ],
+      "@/context/*": [
+        "context/*"
+      ],
     },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

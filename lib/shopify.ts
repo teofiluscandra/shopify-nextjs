@@ -1,3 +1,4 @@
+import { Product } from 'shared/types';
 const DOMAIN = process.env.SHOPIFY_DOMAIN;
 const API_KEY = process.env.SHOPIFY_STOREFRONT_API;
 
@@ -82,7 +83,7 @@ export async function getAllProducts() {
   return slugs;
 }
 
-export async function getProductsByHandle(handle) {
+export async function getProductsByHandle(handle: string) {
   const query = `
   {
     productByHandle(handle: "${handle}") {
@@ -132,7 +133,7 @@ export async function getProductsByHandle(handle) {
 
 }
 
-export async function createCheckout(id, qty) {
+export async function createCheckout(id: string, qty: number) {
   const query = `
     mutation {
       checkoutCreate(input: {
@@ -149,5 +150,41 @@ export async function createCheckout(id, qty) {
 
   const response = await request(query);
   const checkout = response.data.checkoutCreate.checkout ?? [];
+  return checkout;
+}
+
+export async function updateCheckout(id: string, lineItems: Product[]) {
+  const formattedLineItems = lineItems.map(item => {
+    return `{
+      variantId: "${item.id}",
+      quantity:${item.variantQuantity}
+    }`
+  })
+
+  const query =
+    `mutation
+      {
+        checkoutLineItemsReplace(lineItems: [${formattedLineItems}], checkoutId: "${id}") {
+          checkout {
+             id
+             webUrl
+             lineItems(first: 250) {
+               edges {
+                 node {
+                   id
+                   title
+                   quantity
+                 }
+               }
+             }
+          }
+        }
+      }
+    `
+  ;
+
+  const response = await request(query);
+  const checkout = response.data.checkoutLineItemsReplace.checkout ?? [];
+
   return checkout;
 }

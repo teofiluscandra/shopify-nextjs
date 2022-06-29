@@ -1,9 +1,21 @@
 import ProductPageContent from "@/components/ProductPageContent";
 import { getAllProducts, getProductsByHandle } from "@/lib/shopify";
-import { GetStaticPaths, GetStaticProps } from "next";
+import {
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from "next";
+import { ParsedUrlQuery } from "querystring";
+import { ProductEdge } from "__generated__/graphql";
 
-const ProductPage = ({ product }) => {
-  console.log(product);
+interface IParams extends ParsedUrlQuery {
+  product: string;
+}
+
+const ProductPage = ({
+  product,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <div className="min-h-screen py-12">
       <ProductPageContent product={product} />
@@ -16,7 +28,7 @@ export default ProductPage;
 export const getStaticPaths: GetStaticPaths = async () => {
   const products = await getAllProducts();
 
-  const paths = products.map((item) => {
+  const paths = products.map((item: ProductEdge) => {
     const product = String(item.node.handle);
     return {
       params: { product },
@@ -29,8 +41,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const product = await getProductsByHandle(params.product);
+export const getStaticProps: GetStaticProps = async (
+  context: GetStaticPropsContext,
+) => {
+  const { product: productName } = context.params as IParams;
+  const product = await getProductsByHandle(productName);
   return {
     props: {
       product,

@@ -1,23 +1,30 @@
-# Next.js + Tailwind CSS Example
+# Next.js + Tailwind CSS + Shopify GraphQL Example
 
 This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
 
-## Deploy your own
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
-
 ## How to use
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+### Shopify Setup
+
+You'll need to create a Shopify store and a private app for that Shopify store and add enable Storefront API.
+
+### Code Setup
+
+Copy the `.env.example` file into `.env.local` (which will be ignored by Git):
 
 ```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-# or
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
+cp .env.local.example .env.local
+```
+
+Then set each variable on `.env.local`:
+
+- SHOPIFY_DOMAIN is the domain of the store
+- SHOPIFY_STOREFRONT_API is your private app's storefront api token
+
+Then run project locally:
+
+```bash
+yarn && yarn dev
 ```
 
 Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
